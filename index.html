@@ -1,1 +1,916 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<title>PDF sang EPUB</title>
 
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#08101f;
+  --card:#111c31;
+  --line:#273652;
+  --text:#f7f9ff;
+  --muted:#aebbd2;
+  --blue:#5b8cff;
+  --green:#36d399;
+  --red:#ff6b75
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:linear-gradient(180deg,#07101e,#0d1830);
+  font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+  min-height:100vh
+}
+
+main{
+  max-width:680px;
+  margin:auto;
+  padding:calc(18px + env(safe-area-inset-top)) 16px
+          calc(28px + env(safe-area-inset-bottom))
+}
+
+h1{
+  font-size:27px;
+  margin:4px 0 6px
+}
+
+.sub{
+  color:var(--muted);
+  line-height:1.45;
+  margin:0 0 18px
+}
+
+.card{
+  background:rgba(17,28,49,.96);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+  margin:12px 0;
+  box-shadow:0 12px 35px #0004
+}
+
+label{
+  display:block;
+  font-weight:650;
+  margin:12px 0 7px
+}
+
+input[type=text],
+input[type=file]{
+  width:100%;
+  background:#091326;
+  border:1px solid #324565;
+  color:white;
+  border-radius:12px;
+  padding:13px;
+  font-size:16px
+}
+
+input[type=file]{
+  padding:11px
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px
+}
+
+button{
+  width:100%;
+  border:0;
+  border-radius:13px;
+  padding:14px;
+  font-weight:750;
+  font-size:17px;
+  background:var(--blue);
+  color:white;
+  margin-top:14px
+}
+
+button:disabled{opacity:.45}
+
+.secondary{background:#243552}
+
+.success{
+  background:var(--green);
+  color:#04251a
+}
+
+.hidden{display:none!important}
+
+progress{
+  width:100%;
+  height:14px;
+  border:0;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:12px
+}
+
+progress::-webkit-progress-bar{
+  background:#07101e
+}
+
+progress::-webkit-progress-value{
+  background:linear-gradient(90deg,var(--blue),var(--green))
+}
+
+#status{
+  color:var(--muted);
+  margin-top:9px;
+  line-height:1.45
+}
+
+.warn{
+  color:#ffd37a;
+  font-size:14px;
+  line-height:1.45
+}
+
+.ok{color:var(--green)}
+.err{color:var(--red)}
+
+.check{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  color:var(--muted);
+  font-weight:400
+}
+
+.check input{
+  margin-top:3px;
+  transform:scale(1.2)
+}
+
+ol{
+  color:var(--muted);
+  padding-left:22px;
+  line-height:1.55
+}
+
+.small{
+  font-size:13px;
+  color:var(--muted)
+}
+</style>
+</head>
+
+<body>
+
+<main>
+
+<h1>PDF → EPUB</h1>
+
+<p class="sub">
+Chuyển sách PDF có chữ thật thành EPUB tự dàn trang.
+File được xử lý ngay trên iPhone, không tải lên máy chủ.
+</p>
+
+<section class="card">
+
+<label for="pdfFile">1. Chọn PDF</label>
+
+<input
+  id="pdfFile"
+  type="file"
+  accept="application/pdf,.pdf"
+>
+
+<div class="row">
+
+<div>
+<label for="title">Tên sách</label>
+<input
+  id="title"
+  type="text"
+  placeholder="Tự lấy từ tên file"
+>
+</div>
+
+<div>
+<label for="author">Tác giả</label>
+<input
+  id="author"
+  type="text"
+  placeholder="Không rõ"
+>
+</div>
+
+</div>
+
+<label class="check">
+<input id="chapters" type="checkbox" checked>
+<span>
+Tự tạo chương theo tiêu đề như “Chương 1”, “Chương I”
+</span>
+</label>
+
+<button id="convert" disabled>
+2. Chuyển sang EPUB
+</button>
+
+<progress
+  id="progress"
+  class="hidden"
+  value="0"
+  max="100">
+</progress>
+
+<div id="status">
+Chưa chọn file.
+</div>
+
+<button
+  id="download"
+  class="success hidden">
+3. Tải EPUB
+</button>
+
+<button
+  id="share"
+  class="secondary hidden">
+Chia sẻ EPUB
+</button>
+
+<p class="warn">
+Phù hợp với PDF có thể bôi chọn chữ.
+PDF scan bằng ảnh sẽ báo không tìm thấy chữ và cần OCR.
+</p>
+
+</section>
+
+<section class="card">
+
+<strong>Sau khi tải xong</strong>
+
+<ol>
+<li>Mở mục Tải về trong Safari hoặc ứng dụng Tệp.</li>
+<li>Nhấn giữ file EPUB → Chia sẻ → Sách.</li>
+<li>Trong Apple Books, nhấn AA để tăng cỡ chữ.</li>
+</ol>
+
+<div class="small">
+Nên để Safari mở trong lúc chuyển.
+PDF 437 trang có thể mất vài phút tùy iPhone.
+</div>
+
+</section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">\</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">\</script>
+
+<script>
+
+const $ = id => document.getElementById(id);
+
+const fileEl = $('pdfFile');
+const btn = $('convert');
+const statusEl = $('status');
+const prog = $('progress');
+const dl = $('download');
+const share = $('share');
+
+let epubBlob = null;
+let epubName = 'book.epub';
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+
+const esc = s =>
+String(s).replace(
+  /[&<>"']/g,
+  c => ({
+    '&':'&',
+    '<':'<',
+    '>':'>',
+    '"':'"',
+    "'":'''
+  }[c])
+);
+
+
+const cleanName = s =>
+(s || 'book')
+.replace(/\.pdf$/i,'')
+.replace(/[\\/:*?"<>|]/g,'_')
+.trim() || 'book';
+
+
+const uid = () =>
+'urn:uuid:' + crypto.randomUUID();
+
+
+fileEl.onchange = () => {
+
+  const f = fileEl.files[0];
+
+  btn.disabled = !f;
+
+  if(f && !$('title').value){
+    $('title').value =
+      f.name.replace(/\.pdf$/i,'');
+  }
+
+  statusEl.textContent = f
+    ? `${f.name} • ${(f.size/1048576).toFixed(1)} MB`
+    : 'Chưa chọn file.';
+};
+
+
+function pageText(items){
+
+  let lines = [];
+  let line = [];
+  let lastY = null;
+
+  for(const it of items){
+
+    const t = (it.str || '').trim();
+
+    if(!t) continue;
+
+    const y =
+      Math.round(it.transform?.[5] || 0);
+
+    if(
+      lastY !== null &&
+      Math.abs(y-lastY) > 3
+    ){
+
+      if(line.length)
+        lines.push(line.join(' '));
+
+      line = [];
+    }
+
+    line.push(t);
+    lastY = y;
+  }
+
+  if(line.length)
+    lines.push(line.join(' '));
+
+  return lines
+    .map(x => x.replace(/\s+/g,' ').trim())
+    .filter(Boolean);
+}
+
+
+function xhtml(title,body){
+
+return `<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html
+xmlns="http://www.w3.org/1999/xhtml"
+lang="vi">
+
+<head>
+
+<meta charset="utf-8"/>
+
+<title>${esc(title)}</title>
+
+<link
+rel="stylesheet"
+type="text/css"
+href="style.css"/>
+
+</head>
+
+<body>
+
+${body}
+
+</body>
+
+</html>`;
+}
+
+
+async function build(){
+
+const f = fileEl.files[0];
+
+if(!f) return;
+
+btn.disabled = true;
+
+dl.classList.add('hidden');
+share.classList.add('hidden');
+
+prog.classList.remove('hidden');
+prog.value = 0;
+
+epubBlob = null;
+
+try{
+
+statusEl.textContent =
+'Đang mở PDF…';
+
+const data =
+await f.arrayBuffer();
+
+const pdf =
+await pdfjsLib.getDocument({
+  data
+}).promise;
+
+let pages = [];
+let chars = 0;
+
+
+for(
+  let i=1;
+  i<=pdf.numPages;
+  i++
+){
+
+const p =
+await pdf.getPage(i);
+
+const tc =
+await p.getTextContent();
+
+const lines =
+pageText(tc.items);
+
+chars +=
+lines.join('').length;
+
+pages.push(lines);
+
+prog.value =
+Math.round(
+  i/pdf.numPages*72
+);
+
+statusEl.textContent =
+`Đang đọc trang ${i} / ${pdf.numPages}`;
+
+await new Promise(
+  r => setTimeout(r,0)
+);
+
+}
+
+
+if(
+  chars <
+  Math.max(
+    300,
+    pdf.numPages*20
+  )
+){
+
+throw new Error(
+'PDF này gần như không có chữ thật. Có thể đây là PDF scan bằng ảnh, cần OCR.'
+);
+
+}
+
+
+statusEl.textContent =
+'Đang tạo EPUB tự dàn trang…';
+
+
+const title =
+$('title').value.trim()
+|| cleanName(f.name);
+
+
+const author =
+$('author').value.trim()
+|| 'Không rõ';
+
+
+const id = uid();
+
+const auto =
+$('chapters').checked;
+
+
+let sections = [];
+
+let current = {
+  title:title,
+  paras:[]
+};
+
+
+const chapterRx =
+/^(chương|chapter)\s+([0-9ivxlcdm]+)\b[.:\-–—]?\s*(.*)$/i;
+
+
+for(const lines of pages){
+
+for(const line of lines){
+
+if(
+  auto &&
+  chapterRx.test(line) &&
+  current.paras.length
+){
+
+sections.push(current);
+
+current = {
+  title:line,
+  paras:[]
+};
+
+}else{
+
+current.paras.push(line);
+
+}
+
+}
+
+}
+
+
+if(current.paras.length)
+sections.push(current);
+
+
+const zip =
+new JSZip();
+
+
+zip.file(
+'mimetype',
+'application/epub+zip',
+{
+compression:'STORE'
+}
+);
+
+
+zip.file(
+'META-INF/container.xml',
+`<?xml version="1.0"?>
+<container
+version="1.0"
+xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
+
+<rootfiles>
+
+<rootfile
+full-path="OEBPS/content.opf"
+media-type="application/oebps-package+xml"/>
+
+</rootfiles>
+
+</container>`
+);
+
+
+zip.file(
+'OEBPS/style.css',
+`
+body{
+font-family:serif;
+line-height:1.55;
+margin:5%;
+}
+
+h1{
+font-size:1.5em;
+margin:1em 0;
+}
+
+p{
+margin:.55em 0;
+text-align:justify;
+}
+`
+);
+
+
+let manifest = [
+
+'<item id="css" href="style.css" media-type="text/css"/>',
+
+'<item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>'
+
+];
+
+
+let spine = [];
+let nav = [];
+
+
+sections.forEach(
+(s,n)=>{
+
+const fn =
+`ch${n+1}.xhtml`;
+
+const iid =
+`ch${n+1}`;
+
+
+manifest.push(
+`<item id="${iid}" href="${fn}" media-type="application/xhtml+xml"/>`
+);
+
+
+spine.push(
+`<itemref idref="${iid}"/>`
+);
+
+
+nav.push(
+`<li><a href="${fn}">${esc(s.title)}</a></li>`
+);
+
+
+zip.file(
+'OEBPS/'+fn,
+
+xhtml(
+s.title,
+
+`<h1>${esc(s.title)}</h1>` +
+
+s.paras
+.map(
+p => `<p>${esc(p)}</p>`
+)
+.join('')
+)
+
+);
+
+});
+
+
+zip.file(
+
+'OEBPS/nav.xhtml',
+
+xhtml(
+
+'Mục lục',
+
+`
+<nav
+epub:type="toc"
+xmlns:epub="http://www.idpf.org/2007/ops">
+
+<h1>Mục lục</h1>
+
+<ol>
+${nav.join('')}
+</ol>
+
+</nav>
+`
+
+)
+
+);
+
+
+zip.file(
+
+'OEBPS/content.opf',
+
+`<?xml version="1.0" encoding="utf-8"?>
+
+<package
+xmlns="http://www.idpf.org/2007/opf"
+version="3.0"
+unique-identifier="bookid">
+
+<metadata
+xmlns:dc="http://purl.org/dc/elements/1.1/">
+
+<dc:identifier id="bookid">
+${id}
+</dc:identifier>
+
+<dc:title>
+${esc(title)}
+</dc:title>
+
+<dc:language>
+vi
+</dc:language>
+
+<dc:creator>
+${esc(author)}
+</dc:creator>
+
+<meta property="dcterms:modified">
+${new Date()
+.toISOString()
+.replace(/\.\d{3}Z$/,'Z')}
+</meta>
+
+</metadata>
+
+<manifest>
+${manifest.join('')}
+</manifest>
+
+<spine>
+${spine.join('')}
+</spine>
+
+</package>`
+);
+
+
+prog.value = 85;
+
+
+epubBlob =
+await zip.generateAsync(
+
+{
+
+type:'blob',
+
+mimeType:
+'application/epub+zip',
+
+compression:
+'DEFLATE',
+
+compressionOptions:{
+level:6
+}
+
+},
+
+m => {
+
+prog.value =
+85 +
+Math.round(
+m.percent*.15
+);
+
+statusEl.textContent =
+`Đang đóng gói EPUB… ${Math.round(m.percent)}%`;
+
+}
+
+);
+
+
+epubName =
+cleanName(title)
++ '.epub';
+
+
+statusEl.innerHTML =
+`<span class="ok">
+Hoàn tất.
+</span>
+
+${pdf.numPages} trang,
+${sections.length} phần,
+${(epubBlob.size/1048576).toFixed(1)} MB.`;
+
+
+dl.classList.remove(
+'hidden'
+);
+
+
+if(
+navigator.share &&
+navigator.canShare
+){
+
+share.classList.remove(
+'hidden'
+);
+
+}
+
+
+}catch(e){
+
+console.error(e);
+
+statusEl.innerHTML =
+`<span class="err">
+Không chuyển được:
+</span>
+${esc(e.message || e)}`;
+
+}
+
+finally{
+
+btn.disabled = false;
+
+}
+
+}
+
+
+btn.onclick = build;
+
+
+dl.onclick = () => {
+
+if(!epubBlob) return;
+
+const url =
+URL.createObjectURL(
+epubBlob
+);
+
+const a =
+document.createElement('a');
+
+a.href = url;
+a.download = epubName;
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+setTimeout(
+() =>
+URL.revokeObjectURL(url),
+30000
+);
+
+};
+
+
+share.onclick =
+async () => {
+
+if(!epubBlob) return;
+
+try{
+
+const file =
+new File(
+[epubBlob],
+epubName,
+{
+type:
+'application/epub+zip'
+}
+);
+
+
+if(
+navigator.canShare?.({
+files:[file]
+})
+){
+
+await navigator.share({
+files:[file],
+title:epubName
+});
+
+}else{
+
+dl.click();
+
+}
+
+}catch(e){
+
+if(
+e.name !==
+'AbortError'
+){
+
+dl.click();
+
+}
+
+}
+
+};
+
+</script>
+
+</body>
+</html>
