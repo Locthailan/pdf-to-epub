@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#08101f">
 <title>PDF sang EPUB</title>
 
 <style>
@@ -11,155 +11,162 @@
   color-scheme:dark;
   --bg:#08101f;
   --card:#111c31;
-  --line:#273652;
+  --line:#2b3d5e;
   --text:#f7f9ff;
-  --muted:#aebbd2;
-  --blue:#5b8cff;
-  --green:#36d399;
-  --red:#ff6b75
+  --muted:#adb9cf;
+  --blue:#527de0;
+  --green:#37d79b;
+  --red:#ff7079;
+  --yellow:#ffd06d;
 }
 
 *{box-sizing:border-box}
 
 body{
   margin:0;
-  background:linear-gradient(180deg,#07101e,#0d1830);
-  font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:linear-gradient(180deg,#07101e,#0b1730);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   color:var(--text);
-  min-height:100vh
+  min-height:100vh;
 }
 
 main{
   max-width:680px;
   margin:auto;
-  padding:calc(18px + env(safe-area-inset-top)) 16px
-          calc(28px + env(safe-area-inset-bottom))
+  padding:
+    calc(18px + env(safe-area-inset-top))
+    16px
+    calc(30px + env(safe-area-inset-bottom));
 }
 
 h1{
-  font-size:27px;
-  margin:4px 0 6px
+  margin:5px 0 7px;
+  font-size:28px;
 }
 
 .sub{
   color:var(--muted);
-  line-height:1.45;
-  margin:0 0 18px
+  line-height:1.5;
+  margin:0 0 18px;
 }
 
 .card{
-  background:rgba(17,28,49,.96);
+  background:#111c31;
   border:1px solid var(--line);
-  border-radius:18px;
-  padding:16px;
-  margin:12px 0;
-  box-shadow:0 12px 35px #0004
+  border-radius:20px;
+  padding:17px;
+  margin:14px 0;
 }
 
 label{
   display:block;
-  font-weight:650;
-  margin:12px 0 7px
+  font-weight:700;
+  margin:14px 0 7px;
 }
 
 input[type=text],
 input[type=file]{
   width:100%;
   background:#091326;
-  border:1px solid #324565;
-  color:white;
-  border-radius:12px;
-  padding:13px;
-  font-size:16px
-}
-
-input[type=file]{
-  padding:11px
+  color:#fff;
+  border:1px solid #385077;
+  border-radius:14px;
+  padding:14px;
+  font-size:16px;
 }
 
 .row{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px
+  gap:12px;
+}
+
+.checkbox{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-top:17px;
+  color:var(--muted);
+  line-height:1.45;
+}
+
+.checkbox input{
+  width:22px;
+  height:22px;
+  margin:0;
+  flex:none;
 }
 
 button{
   width:100%;
-  border:0;
-  border-radius:13px;
-  padding:14px;
-  font-weight:750;
+  border:none;
+  border-radius:15px;
+  padding:16px 12px;
+  margin-top:17px;
   font-size:17px;
-  background:var(--blue);
+  font-weight:750;
   color:white;
-  margin-top:14px
+  background:var(--blue);
+  -webkit-appearance:none;
 }
 
-button:disabled{opacity:.45}
-
-.secondary{background:#243552}
+button:disabled{
+  opacity:.37;
+}
 
 .success{
   background:var(--green);
-  color:#04251a
+  color:#05271c;
 }
 
-.hidden{display:none!important}
+.secondary{
+  background:#293c5e;
+}
+
+.hidden{
+  display:none!important;
+}
 
 progress{
   width:100%;
-  height:14px;
-  border:0;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:12px
-}
-
-progress::-webkit-progress-bar{
-  background:#07101e
-}
-
-progress::-webkit-progress-value{
-  background:linear-gradient(90deg,var(--blue),var(--green))
+  height:15px;
+  margin-top:17px;
 }
 
 #status{
+  margin-top:12px;
   color:var(--muted);
-  margin-top:9px;
-  line-height:1.45
-}
-
-.warn{
-  color:#ffd37a;
-  font-size:14px;
-  line-height:1.45
+  line-height:1.5;
+  word-break:break-word;
 }
 
 .ok{color:var(--green)}
 .err{color:var(--red)}
 
-.check{
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  color:var(--muted);
-  font-weight:400
-}
-
-.check input{
-  margin-top:3px;
-  transform:scale(1.2)
+.warning{
+  color:var(--yellow);
+  line-height:1.5;
+  font-size:14px;
+  margin-top:20px;
 }
 
 ol{
   color:var(--muted);
-  padding-left:22px;
-  line-height:1.55
+  line-height:1.7;
+  padding-left:25px;
 }
 
 .small{
+  color:var(--muted);
   font-size:13px;
-  color:var(--muted)
+  line-height:1.5;
+}
+
+@media(max-width:430px){
+  .row{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
 }
 </style>
 </head>
@@ -171,33 +178,33 @@ ol{
 <h1>PDF → EPUB</h1>
 
 <p class="sub">
-Chuyển sách PDF có chữ thật thành EPUB tự dàn trang.
-File được xử lý ngay trên iPhone, không tải lên máy chủ.
+Chuyển PDF có chữ thật thành EPUB tự dàn trang.
+File được xử lý trực tiếp trên iPhone.
 </p>
 
 <section class="card">
 
-<label for="pdfFile">1. Chọn PDF</label>
+<label>1. Chọn PDF</label>
 
 <input
   id="pdfFile"
   type="file"
-  accept="application/pdf,.pdf"
+  accept=".pdf,application/pdf"
 >
 
 <div class="row">
 
 <div>
-<label for="title">Tên sách</label>
+<label>Tên sách</label>
 <input
   id="title"
   type="text"
-  placeholder="Tự lấy từ tên file"
+  placeholder="Tên sách"
 >
 </div>
 
 <div>
-<label for="author">Tác giả</label>
+<label>Tác giả</label>
 <input
   id="author"
   type="text"
@@ -207,14 +214,14 @@ File được xử lý ngay trên iPhone, không tải lên máy chủ.
 
 </div>
 
-<label class="check">
+<div class="checkbox">
 <input id="chapters" type="checkbox" checked>
 <span>
-Tự tạo chương theo tiêu đề như “Chương 1”, “Chương I”
+Tự nhận diện tiêu đề như “Chương 1”, “Chương I”
 </span>
-</label>
+</div>
 
-<button id="convert" disabled>
+<button id="convert" type="button" disabled>
 2. Chuyển sang EPUB
 </button>
 
@@ -231,148 +238,244 @@ Chưa chọn file.
 
 <button
   id="download"
+  type="button"
   class="success hidden">
 3. Tải EPUB
 </button>
 
 <button
   id="share"
+  type="button"
   class="secondary hidden">
 Chia sẻ EPUB
 </button>
 
-<p class="warn">
-Phù hợp với PDF có thể bôi chọn chữ.
-PDF scan bằng ảnh sẽ báo không tìm thấy chữ và cần OCR.
+<p class="warning">
+PDF phải có chữ thật. Nếu PDF là ảnh scan thì cần OCR.
 </p>
 
 </section>
 
+
 <section class="card">
 
-<strong>Sau khi tải xong</strong>
+<strong>Sau khi chuyển xong</strong>
 
 <ol>
-<li>Mở mục Tải về trong Safari hoặc ứng dụng Tệp.</li>
-<li>Nhấn giữ file EPUB → Chia sẻ → Sách.</li>
-<li>Trong Apple Books, nhấn AA để tăng cỡ chữ.</li>
+<li>Nhấn Tải EPUB hoặc Chia sẻ EPUB.</li>
+<li>Chọn Sách / Books.</li>
+<li>Mở EPUB trong Apple Books.</li>
+<li>Nhấn AA để tăng hoặc giảm cỡ chữ.</li>
 </ol>
 
 <div class="small">
-Nên để Safari mở trong lúc chuyển.
-PDF 437 trang có thể mất vài phút tùy iPhone.
+Với sách khoảng 437 trang, hãy giữ Safari mở trong khi chuyển.
 </div>
 
 </section>
 
 </main>
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">\</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">\</script>
 
+
 <script>
 
-const $ = id => document.getElementById(id);
+const fileEl = document.getElementById("pdfFile");
+const titleEl = document.getElementById("title");
+const authorEl = document.getElementById("author");
+const chaptersEl = document.getElementById("chapters");
 
-const fileEl = $('pdfFile');
-const btn = $('convert');
-const statusEl = $('status');
-const prog = $('progress');
-const dl = $('download');
-const share = $('share');
+const convertBtn = document.getElementById("convert");
+const downloadBtn = document.getElementById("download");
+const shareBtn = document.getElementById("share");
 
+const statusEl = document.getElementById("status");
+const progressEl = document.getElementById("progress");
+
+
+let selectedFile = null;
 let epubBlob = null;
-let epubName = 'book.epub';
-
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+let epubName = "book.epub";
 
 
-const esc = s =>
-String(s).replace(
-  /[&<>"']/g,
-  c => ({
-    '&':'&',
-    '<':'<',
-    '>':'>',
-    '"':'"',
-    "'":'''
-  }[c])
+if(typeof pdfjsLib !== "undefined"){
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+}
+
+
+function escapeXML(value){
+
+  return String(value).replace(/[&<>"']/g,function(c){
+
+    return {
+      "&":"&",
+      "<":"<",
+      ">":">",
+      '"':""",
+      "'":"'"
+    }[c];
+
+  });
+
+}
+
+
+function cleanFilename(value){
+
+  return (value || "book")
+    .replace(/\.pdf$/i,"")
+    .replace(/[\\/:*?"<>|]/g,"_")
+    .trim() || "book";
+
+}
+
+
+function updateSelectedFile(){
+
+  if(
+    fileEl.files &&
+    fileEl.files.length > 0
+  ){
+
+    selectedFile = fileEl.files[0];
+
+    /*
+    Safari iPhone fix:
+    bật nút trực tiếp sau khi nhận file.
+    */
+
+    convertBtn.disabled = false;
+
+    if(!titleEl.value.trim()){
+
+      titleEl.value =
+        selectedFile.name.replace(/\.pdf$/i,"");
+
+    }
+
+    const mb =
+      selectedFile.size / 1024 / 1024;
+
+    statusEl.innerHTML =
+      '<span class="ok">Đã chọn:</span> ' +
+      escapeXML(selectedFile.name) +
+      " • " +
+      mb.toFixed(1) +
+      " MB";
+
+  }
+
+  else{
+
+    selectedFile = null;
+
+    convertBtn.disabled = true;
+
+    statusEl.textContent =
+      "Chưa chọn file.";
+
+  }
+
+}
+
+
+fileEl.addEventListener(
+  "change",
+  updateSelectedFile
 );
 
 
-const cleanName = s =>
-(s || 'book')
-.replace(/\.pdf$/i,'')
-.replace(/[\\/:*?"<>|]/g,'_')
-.trim() || 'book';
+fileEl.addEventListener(
+  "input",
+  updateSelectedFile
+);
 
 
-const uid = () =>
-'urn:uuid:' + crypto.randomUUID();
+function extractLines(items){
 
+  const lines = [];
 
-fileEl.onchange = () => {
-
-  const f = fileEl.files[0];
-
-  btn.disabled = !f;
-
-  if(f && !$('title').value){
-    $('title').value =
-      f.name.replace(/\.pdf$/i,'');
-  }
-
-  statusEl.textContent = f
-    ? `${f.name} • ${(f.size/1048576).toFixed(1)} MB`
-    : 'Chưa chọn file.';
-};
-
-
-function pageText(items){
-
-  let lines = [];
-  let line = [];
+  let current = [];
   let lastY = null;
 
-  for(const it of items){
 
-    const t = (it.str || '').trim();
+  for(const item of items){
 
-    if(!t) continue;
+    const text =
+      (item.str || "").trim();
+
+    if(!text)
+      continue;
+
 
     const y =
-      Math.round(it.transform?.[5] || 0);
+      Math.round(
+        item.transform &&
+        item.transform[5]
+        ? item.transform[5]
+        : 0
+      );
+
 
     if(
       lastY !== null &&
       Math.abs(y-lastY) > 3
     ){
 
-      if(line.length)
-        lines.push(line.join(' '));
+      if(current.length){
 
-      line = [];
+        lines.push(
+          current.join(" ")
+        );
+
+      }
+
+      current = [];
+
     }
 
-    line.push(t);
+
+    current.push(text);
+
     lastY = y;
+
   }
 
-  if(line.length)
-    lines.push(line.join(' '));
+
+  if(current.length){
+
+    lines.push(
+      current.join(" ")
+    );
+
+  }
+
 
   return lines
-    .map(x => x.replace(/\s+/g,' ').trim())
+    .map(function(line){
+
+      return line
+        .replace(/\s+/g," ")
+        .trim();
+
+    })
     .filter(Boolean);
+
 }
 
 
-function xhtml(title,body){
+function makeXHTML(title,body){
 
-return `<?xml version="1.0" encoding="utf-8"?>
+  return `<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html>
+
 <html
 xmlns="http://www.w3.org/1999/xhtml"
 lang="vi">
@@ -381,7 +484,7 @@ lang="vi">
 
 <meta charset="utf-8"/>
 
-<title>${esc(title)}</title>
+<title>${escapeXML(title)}</title>
 
 <link
 rel="stylesheet"
@@ -397,172 +500,282 @@ ${body}
 </body>
 
 </html>`;
-}
-
-
-async function build(){
-
-const f = fileEl.files[0];
-
-if(!f) return;
-
-btn.disabled = true;
-
-dl.classList.add('hidden');
-share.classList.add('hidden');
-
-prog.classList.remove('hidden');
-prog.value = 0;
-
-epubBlob = null;
-
-try{
-
-statusEl.textContent =
-'Đang mở PDF…';
-
-const data =
-await f.arrayBuffer();
-
-const pdf =
-await pdfjsLib.getDocument({
-  data
-}).promise;
-
-let pages = [];
-let chars = 0;
-
-
-for(
-  let i=1;
-  i<=pdf.numPages;
-  i++
-){
-
-const p =
-await pdf.getPage(i);
-
-const tc =
-await p.getTextContent();
-
-const lines =
-pageText(tc.items);
-
-chars +=
-lines.join('').length;
-
-pages.push(lines);
-
-prog.value =
-Math.round(
-  i/pdf.numPages*72
-);
-
-statusEl.textContent =
-`Đang đọc trang ${i} / ${pdf.numPages}`;
-
-await new Promise(
-  r => setTimeout(r,0)
-);
 
 }
 
 
-if(
-  chars <
-  Math.max(
-    300,
-    pdf.numPages*20
-  )
-){
+async function convertPDF(){
 
-throw new Error(
-'PDF này gần như không có chữ thật. Có thể đây là PDF scan bằng ảnh, cần OCR.'
-);
+  /*
+  Trên Safari iPhone, dùng selectedFile trước.
+  Nếu chưa có thì đọc lại từ input.
+  */
 
-}
+  if(!selectedFile){
 
+    if(
+      fileEl.files &&
+      fileEl.files.length
+    ){
 
-statusEl.textContent =
-'Đang tạo EPUB tự dàn trang…';
+      selectedFile =
+        fileEl.files[0];
 
+    }
 
-const title =
-$('title').value.trim()
-|| cleanName(f.name);
+  }
 
 
-const author =
-$('author').value.trim()
-|| 'Không rõ';
+  if(!selectedFile){
+
+    statusEl.innerHTML =
+      '<span class="err">Không tìm thấy file PDF.</span>';
+
+    return;
+
+  }
 
 
-const id = uid();
+  convertBtn.disabled = true;
 
-const auto =
-$('chapters').checked;
+  downloadBtn.classList.add("hidden");
+  shareBtn.classList.add("hidden");
 
+  progressEl.classList.remove("hidden");
 
-let sections = [];
+  progressEl.value = 0;
 
-let current = {
-  title:title,
-  paras:[]
-};
+  epubBlob = null;
 
 
-const chapterRx =
-/^(chương|chapter)\s+([0-9ivxlcdm]+)\b[.:\-–—]?\s*(.*)$/i;
+  try{
+
+    if(typeof pdfjsLib === "undefined"){
+
+      throw new Error(
+        "Không tải được PDF.js. Hãy kiểm tra Internet rồi thử lại."
+      );
+
+    }
 
 
-for(const lines of pages){
+    if(typeof JSZip === "undefined"){
 
-for(const line of lines){
+      throw new Error(
+        "Không tải được JSZip. Hãy kiểm tra Internet rồi thử lại."
+      );
 
-if(
-  auto &&
-  chapterRx.test(line) &&
-  current.paras.length
-){
-
-sections.push(current);
-
-current = {
-  title:line,
-  paras:[]
-};
-
-}else{
-
-current.paras.push(line);
-
-}
-
-}
-
-}
+    }
 
 
-if(current.paras.length)
-sections.push(current);
+    statusEl.textContent =
+      "Đang mở PDF...";
 
 
-const zip =
-new JSZip();
+    const arrayBuffer =
+      await selectedFile.arrayBuffer();
 
 
-zip.file(
-'mimetype',
-'application/epub+zip',
-{
-compression:'STORE'
-}
-);
+    const pdf =
+      await pdfjsLib.getDocument({
+        data:arrayBuffer
+      }).promise;
 
 
-zip.file(
-'META-INF/container.xml',
-`<?xml version="1.0"?>
+    const pages = [];
+
+    let totalCharacters = 0;
+
+
+    for(
+      let pageNumber = 1;
+      pageNumber <= pdf.numPages;
+      pageNumber++
+    ){
+
+      const page =
+        await pdf.getPage(pageNumber);
+
+
+      const textContent =
+        await page.getTextContent();
+
+
+      const lines =
+        extractLines(textContent.items);
+
+
+      totalCharacters +=
+        lines.join("").length;
+
+
+      pages.push(lines);
+
+
+      progressEl.value =
+        Math.round(
+          pageNumber /
+          pdf.numPages *
+          75
+        );
+
+
+      statusEl.textContent =
+        "Đang đọc trang " +
+        pageNumber +
+        " / " +
+        pdf.numPages;
+
+
+      /*
+      Cho Safari iPhone thời gian cập nhật giao diện,
+      giảm khả năng trình duyệt bị đơ.
+      */
+
+      if(pageNumber % 3 === 0){
+
+        await new Promise(function(resolve){
+
+          setTimeout(resolve,5);
+
+        });
+
+      }
+
+    }
+
+
+    if(
+      totalCharacters <
+      Math.max(
+        300,
+        pdf.numPages * 20
+      )
+    ){
+
+      throw new Error(
+        "PDF gần như không có chữ thật. Có thể đây là PDF scan bằng ảnh và cần OCR."
+      );
+
+    }
+
+
+    statusEl.textContent =
+      "Đang tạo EPUB...";
+
+
+    const bookTitle =
+      titleEl.value.trim() ||
+      cleanFilename(selectedFile.name);
+
+
+    const author =
+      authorEl.value.trim() ||
+      "Không rõ";
+
+
+    let identifier;
+
+    if(
+      window.crypto &&
+      crypto.randomUUID
+    ){
+
+      identifier =
+        "urn:uuid:" +
+        crypto.randomUUID();
+
+    }
+
+    else{
+
+      identifier =
+        "urn:book:" +
+        Date.now();
+
+    }
+
+
+    const sections = [];
+
+    let currentSection = {
+      title:bookTitle,
+      paragraphs:[]
+    };
+
+
+    const chapterRegex =
+      /^(chương|chapter)\s+([0-9ivxlcdm]+)\b[.:\-–—]?\s*(.*)$/i;
+
+
+    for(const pageLines of pages){
+
+      for(const line of pageLines){
+
+        if(
+          chaptersEl.checked &&
+          chapterRegex.test(line) &&
+          currentSection.paragraphs.length
+        ){
+
+          sections.push(
+            currentSection
+          );
+
+
+          currentSection = {
+            title:line,
+            paragraphs:[]
+          };
+
+        }
+
+        else{
+
+          currentSection
+            .paragraphs
+            .push(line);
+
+        }
+
+      }
+
+    }
+
+
+    if(
+      currentSection.paragraphs.length
+    ){
+
+      sections.push(
+        currentSection
+      );
+
+    }
+
+
+    const zip =
+      new JSZip();
+
+
+    /*
+    EPUB yêu cầu mimetype đứng đầu
+    và không được nén.
+    */
+
+    zip.file(
+      "mimetype",
+      "application/epub+zip",
+      {
+        compression:"STORE"
+      }
+    );
+
+
+    zip.file(
+      "META-INF/container.xml",
+`<?xml version="1.0" encoding="UTF-8"?>
+
 <container
 version="1.0"
 xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
@@ -576,119 +789,165 @@ media-type="application/oebps-package+xml"/>
 </rootfiles>
 
 </container>`
-);
+    );
 
 
-zip.file(
-'OEBPS/style.css',
+    zip.file(
+      "OEBPS/style.css",
 `
 body{
-font-family:serif;
-line-height:1.55;
-margin:5%;
+  font-family:serif;
+  line-height:1.6;
+  margin:5%;
 }
 
 h1{
-font-size:1.5em;
-margin:1em 0;
+  font-size:1.5em;
+  margin:1em 0;
 }
 
 p{
-margin:.55em 0;
-text-align:justify;
+  margin:.6em 0;
+  text-align:left;
 }
 `
-);
+    );
 
 
-let manifest = [
+    const manifest = [
 
-'<item id="css" href="style.css" media-type="text/css"/>',
+      '<item id="css" href="style.css" media-type="text/css"/>',
 
-'<item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>'
+      '<item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>'
 
-];
-
-
-let spine = [];
-let nav = [];
+    ];
 
 
-sections.forEach(
-(s,n)=>{
-
-const fn =
-`ch${n+1}.xhtml`;
-
-const iid =
-`ch${n+1}`;
+    const spine = [];
+    const nav = [];
 
 
-manifest.push(
-`<item id="${iid}" href="${fn}" media-type="application/xhtml+xml"/>`
-);
+    sections.forEach(
+      function(section,index){
+
+        const number =
+          index + 1;
+
+        const filename =
+          "ch" +
+          number +
+          ".xhtml";
+
+        const itemID =
+          "ch" +
+          number;
 
 
-spine.push(
-`<itemref idref="${iid}"/>`
-);
+        manifest.push(
+
+          '<item id="' +
+          itemID +
+          '" href="' +
+          filename +
+          '" media-type="application/xhtml+xml"/>'
+
+        );
 
 
-nav.push(
-`<li><a href="${fn}">${esc(s.title)}</a></li>`
-);
+        spine.push(
+
+          '<itemref idref="' +
+          itemID +
+          '"/>'
+
+        );
 
 
-zip.file(
-'OEBPS/'+fn,
+        nav.push(
 
-xhtml(
-s.title,
+          '<li><a href="' +
+          filename +
+          '">' +
+          escapeXML(section.title) +
+          '</a></li>'
 
-`<h1>${esc(s.title)}</h1>` +
-
-s.paras
-.map(
-p => `<p>${esc(p)}</p>`
-)
-.join('')
-)
-
-);
-
-});
+        );
 
 
-zip.file(
+        const paragraphs =
+          section.paragraphs
+          .map(function(paragraph){
 
-'OEBPS/nav.xhtml',
+            return (
+              "<p>" +
+              escapeXML(paragraph) +
+              "</p>"
+            );
 
-xhtml(
+          })
+          .join("");
 
-'Mục lục',
 
-`
-<nav
+        const content =
+          "<h1>" +
+          escapeXML(section.title) +
+          "</h1>" +
+          paragraphs;
+
+
+        zip.file(
+
+          "OEBPS/" +
+          filename,
+
+          makeXHTML(
+            section.title,
+            content
+          )
+
+        );
+
+      }
+    );
+
+
+    zip.file(
+      "OEBPS/nav.xhtml",
+
+      makeXHTML(
+
+        "Mục lục",
+
+`<nav
 epub:type="toc"
 xmlns:epub="http://www.idpf.org/2007/ops">
 
 <h1>Mục lục</h1>
 
 <ol>
-${nav.join('')}
+
+${nav.join("")}
+
 </ol>
 
-</nav>
-`
+</nav>`
 
-)
+      )
 
-);
+    );
 
 
-zip.file(
+    const modified =
+      new Date()
+      .toISOString()
+      .replace(
+        /\.\d{3}Z$/,
+        "Z"
+      );
 
-'OEBPS/content.opf',
+
+    zip.file(
+      "OEBPS/content.opf",
 
 `<?xml version="1.0" encoding="utf-8"?>
 
@@ -701,11 +960,11 @@ unique-identifier="bookid">
 xmlns:dc="http://purl.org/dc/elements/1.1/">
 
 <dc:identifier id="bookid">
-${id}
+${identifier}
 </dc:identifier>
 
 <dc:title>
-${esc(title)}
+${escapeXML(bookTitle)}
 </dc:title>
 
 <dc:language>
@@ -713,202 +972,292 @@ vi
 </dc:language>
 
 <dc:creator>
-${esc(author)}
+${escapeXML(author)}
 </dc:creator>
 
 <meta property="dcterms:modified">
-${new Date()
-.toISOString()
-.replace(/\.\d{3}Z$/,'Z')}
+${modified}
 </meta>
 
 </metadata>
 
 <manifest>
-${manifest.join('')}
+
+${manifest.join("")}
+
 </manifest>
 
 <spine>
-${spine.join('')}
+
+${spine.join("")}
+
 </spine>
 
 </package>`
+
+    );
+
+
+    progressEl.value = 80;
+
+
+    epubBlob =
+      await zip.generateAsync(
+
+        {
+
+          type:"blob",
+
+          mimeType:
+          "application/epub+zip",
+
+          compression:
+          "DEFLATE",
+
+          compressionOptions:{
+            level:6
+          }
+
+        },
+
+        function(metadata){
+
+          progressEl.value =
+            80 +
+            Math.round(
+              metadata.percent *
+              0.20
+            );
+
+
+          statusEl.textContent =
+            "Đang đóng gói EPUB... " +
+            Math.round(metadata.percent) +
+            "%";
+
+        }
+
+      );
+
+
+    epubName =
+      cleanFilename(bookTitle) +
+      ".epub";
+
+
+    progressEl.value = 100;
+
+
+    statusEl.innerHTML =
+
+      '<span class="ok">✓ Chuyển thành công.</span><br>' +
+
+      pdf.numPages +
+      " trang PDF → " +
+
+      sections.length +
+      " phần EPUB<br>" +
+
+      (
+        epubBlob.size /
+        1024 /
+        1024
+      ).toFixed(1) +
+
+      " MB";
+
+
+    downloadBtn.classList.remove(
+      "hidden"
+    );
+
+
+    /*
+    Safari mới có thể Share file trực tiếp.
+    */
+
+    if(
+      navigator.share
+    ){
+
+      shareBtn.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+
+    statusEl.innerHTML =
+
+      '<span class="err">Không chuyển được:</span><br>' +
+
+      escapeXML(
+        error.message ||
+        String(error)
+      );
+
+  }
+
+  finally{
+
+    /*
+    Quan trọng:
+    bật lại nút kể cả khi conversion lỗi.
+    */
+
+    convertBtn.disabled =
+      !selectedFile;
+
+  }
+
+}
+
+
+convertBtn.addEventListener(
+  "click",
+  convertPDF
 );
 
 
-prog.value = 85;
+downloadBtn.addEventListener(
+  "click",
+  function(){
+
+    if(!epubBlob)
+      return;
 
 
-epubBlob =
-await zip.generateAsync(
-
-{
-
-type:'blob',
-
-mimeType:
-'application/epub+zip',
-
-compression:
-'DEFLATE',
-
-compressionOptions:{
-level:6
-}
-
-},
-
-m => {
-
-prog.value =
-85 +
-Math.round(
-m.percent*.15
-);
-
-statusEl.textContent =
-`Đang đóng gói EPUB… ${Math.round(m.percent)}%`;
-
-}
-
-);
+    const url =
+      URL.createObjectURL(
+        epubBlob
+      );
 
 
-epubName =
-cleanName(title)
-+ '.epub';
+    const link =
+      document.createElement("a");
 
 
-statusEl.innerHTML =
-`<span class="ok">
-Hoàn tất.
-</span>
-
-${pdf.numPages} trang,
-${sections.length} phần,
-${(epubBlob.size/1048576).toFixed(1)} MB.`;
+    link.href =
+      url;
 
 
-dl.classList.remove(
-'hidden'
+    link.download =
+      epubName;
+
+
+    document.body.appendChild(
+      link
+    );
+
+
+    link.click();
+
+
+    link.remove();
+
+
+    setTimeout(
+      function(){
+
+        URL.revokeObjectURL(
+          url
+        );
+
+      },
+      30000
+    );
+
+  }
 );
 
 
-if(
-navigator.share &&
-navigator.canShare
-){
+shareBtn.addEventListener(
+  "click",
+  async function(){
 
-share.classList.remove(
-'hidden'
-);
-
-}
+    if(!epubBlob)
+      return;
 
 
-}catch(e){
+    try{
 
-console.error(e);
-
-statusEl.innerHTML =
-`<span class="err">
-Không chuyển được:
-</span>
-${esc(e.message || e)}`;
-
-}
-
-finally{
-
-btn.disabled = false;
-
-}
-
-}
+      const epubFile =
+        new File(
+          [epubBlob],
+          epubName,
+          {
+            type:
+            "application/epub+zip"
+          }
+        );
 
 
-btn.onclick = build;
+      if(
+        navigator.canShare &&
+        navigator.canShare({
+          files:[epubFile]
+        })
+      ){
 
+        await navigator.share({
+          files:[epubFile],
+          title:epubName
+        });
 
-dl.onclick = () => {
+      }
 
-if(!epubBlob) return;
+      else{
 
-const url =
-URL.createObjectURL(
-epubBlob
-);
+        downloadBtn.click();
 
-const a =
-document.createElement('a');
+      }
 
-a.href = url;
-a.download = epubName;
+    }
 
-document.body.appendChild(a);
+    catch(error){
 
-a.click();
+      if(
+        error.name !==
+        "AbortError"
+      ){
 
-a.remove();
+        downloadBtn.click();
 
-setTimeout(
-() =>
-URL.revokeObjectURL(url),
-30000
-);
+      }
 
-};
+    }
 
-
-share.onclick =
-async () => {
-
-if(!epubBlob) return;
-
-try{
-
-const file =
-new File(
-[epubBlob],
-epubName,
-{
-type:
-'application/epub+zip'
-}
+  }
 );
 
 
-if(
-navigator.canShare?.({
-files:[file]
-})
-){
+/*
+Nếu Safari khôi phục trang từ cache,
+kiểm tra lại file input.
+*/
 
-await navigator.share({
-files:[file],
-title:epubName
-});
+window.addEventListener(
+  "pageshow",
+  function(){
 
-}else{
+    if(
+      fileEl.files &&
+      fileEl.files.length > 0
+    ){
 
-dl.click();
+      updateSelectedFile();
 
-}
+    }
 
-}catch(e){
-
-if(
-e.name !==
-'AbortError'
-){
-
-dl.click();
-
-}
-
-}
-
-};
+  }
+);
 
 </script>
 
